@@ -1,0 +1,10 @@
+
+
+
+name ="yadwinder"
+age=25
+
+if age >= 18:
+    print(name, "is an adult")
+else :
+    print(name, " is a minor")
