@@ -1,9 +1,12 @@
-""" Your program should determine:
+"""
+Student Performance Analyzer
 
-Each student's average mark
-Whether they passed or failed
-The student with the highest average
-The student with the lowest average """
+The program determines:
+1. Each student's average mark
+2. Whether they passed or failed
+3. The student with the highest average
+4. The student with the lowest average
+"""
 
 students = {
     "John": [78, 85, 92],
@@ -11,70 +14,95 @@ students = {
     "Sarah": [90, 95, 88],
     "David": [35, 42, 48]
 }
-def each_students_average_marks(marks):
 
+
+# Calculate the average marks for one student
+def calculate_average(marks):
     total = 0
+
     for mark in marks:
-         total= total + mark
+        total = total + mark
 
-    return total /len(marks)
-        
-
+    return total / len(marks)
 
 
-def check_student_pass_or_fail(average):
-
-    
-
+# Check whether a student passed or failed
+def check_pass_fail(average):
     if average >= 50:
-        result = "pass"
+        return "PASS"
     else:
-        result = "fail"
+        return "FAIL"
 
 
-
-def highest_average(students):
+# Find the student with the highest average
+def find_highest_average(students):
     highest_average = 0
-    student_name=""
+    highest_student = ""
+
     for name, marks in students.items():
-        average = each_students_average_marks(marks)
+        average = calculate_average(marks)
 
-        if average >highest_average:
-             highest_average = average  
-             student_name = name
-    return student_name, highest_average
+        if average > highest_average:
+            highest_average = average
+            highest_student = name
+
+    return highest_student, highest_average
 
 
-def lowest_average(students):
+# Find the student with the lowest average
+def find_lowest_average(students):
     lowest_average = 999
-    student_name=""
+    lowest_student = ""
+
     for name, marks in students.items():
-        average = each_students_average_marks(marks)
+        average = calculate_average(marks)
+
         if average < lowest_average:
-             lowest_average = average  
-             student_name = name
-    return student_name , lowest_average
+            lowest_average = average
+            lowest_student = name
 
-for name,marks in students.items():
-    average =each_students_average_marks(marks)
-    result =check_student_pass_or_fail(average)
-
-    print(
-        name,
-        "-Average",
-        round(average,2),
-        "-",
-        result
-    )
+    return lowest_student, lowest_average
 
 
+# ==========================
+# STUDENT REPORT
+# ==========================
 
-highest_student, highest_mark = highest_average(students)
-lowest_student, lowest_mark = lowest_average(students)
+print("========== STUDENT REPORT ==========\n")
+
+for name, marks in students.items():
+
+    average = calculate_average(marks)
+    result = check_pass_fail(average)
+
+    print("Student:", name)
+    print("Marks:", marks)
+    print("Average:", round(average, 2))
+    print("Result:", result)
+    print()
 
 
-print("\nHighest Average:")
-print(highest_student, "-", round(highest_mark, 2))
+# ==========================
+# HIGHEST AND LOWEST
+# ==========================
 
-print("\nLowest Average:")
-print(lowest_student, "-", round(lowest_mark, 2))
+highest_student, highest_average = find_highest_average(students)
+
+lowest_student, lowest_average = find_lowest_average(students)
+
+
+print("========== CLASS SUMMARY ==========\n")
+
+print(
+    "Highest average:",
+    highest_student,
+    "-",
+    round(highest_average, 2)
+)
+
+print(
+    "Lowest average:",
+    lowest_student,
+    "-",
+    round(lowest_average, 2)
+)
