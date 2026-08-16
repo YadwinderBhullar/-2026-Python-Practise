@@ -44,7 +44,8 @@ def calculate_sales_per_hour(sales, hours):
 
 
 # 3. Analyze one employee
-def analyze_employee(name, data):
+def analyze_employee( data):
+
     sales = data["sales"]
     hours = data["hours"]
 
@@ -86,11 +87,13 @@ def calculate_bonus(total_sales, performance):
 
 # 6. Find top performer
 def calculate_top_performer(employees):
+
     highest_sales_per_hour = 0
     top_employee = ""
 
     for name, data in employees.items():
-        total, sales_per_hour = analyze_employee(name, data)
+
+        _, sales_per_hour = analyze_employee(data)
 
         if sales_per_hour > highest_sales_per_hour:
             highest_sales_per_hour = sales_per_hour
@@ -104,8 +107,8 @@ def calculate_lowest_performer(employees):
     lowest_sales_per_hour = 999999
     lowest_employee = ""
 
-    for name, data in employees.items():
-        total, sales_per_hour = analyze_employee(name, data)
+    for  name, data in employees.items():
+        _, sales_per_hour = analyze_employee(data)
 
         if sales_per_hour < lowest_sales_per_hour:
             lowest_sales_per_hour = sales_per_hour
@@ -119,14 +122,14 @@ def calculate_company_summary(employees):
     total_sales = 0
     total_bonus = 0
 
-    for name, data in employees.items():
-        total, sales_per_hour = analyze_employee(name, data)
+    for data in employees.values():
+        total, sales_per_hour = analyze_employee(data)
 
         performance = determine_performance(sales_per_hour)
         bonus = calculate_bonus(total, performance)
 
-        total_sales = total_sales + total
-        total_bonus = total_bonus + bonus
+        total_sales += total
+        total_bonus += bonus
 
     return total_sales, total_bonus
 
@@ -135,23 +138,23 @@ def calculate_company_summary(employees):
 def calculate_department_sales(employees):
     department_sales = {}
 
-    for name, data in employees.items():
+    for data in employees.values():
         department = data["department"]
 
-        total, rate = analyze_employee(name, data)
+        total, _ = analyze_employee(data)
 
         if department not in department_sales:
             department_sales[department] = 0
 
-        department_sales[department] = (
-            department_sales[department] + total
-        )
+        department_sales[department] += total
+        
 
     return department_sales
 
 
 # 10. Find best department by total sales
 def calculate_best_department(department_sales):
+
     highest_sales = 0
     best_department = ""
 
@@ -169,11 +172,11 @@ def calculate_department_average(employees):
     department_sales = {}
     department_count = {}
 
-    for name, data in employees.items():
+    for data in employees.values():
 
         department = data["department"]
 
-        total, rate = analyze_employee(name, data)
+        total, _ = analyze_employee(data)
 
         if department not in department_sales:
             department_sales[department] = 0
@@ -206,21 +209,88 @@ def find_best_department_by_average(averages):
 
     return highest_average, best_department
 
+# 14. Calcualte Performance Statistics
+def calculate_performance_statistics(employees):
 
-# 13. Count excellent employees
-def count_excellent_employees(employees):
-    count = 0
+    statistics = {
+        "Excellent": 0,
+        "Good": 0,
+        "Average": 0,
+        "Needs Improvement": 0
+    }
 
-    for name, data in employees.items():
+    for  data in employees.values():
 
-        total, sales_per_hour = analyze_employee(name, data)
+        total, sales_per_hour = analyze_employee(data)
 
         performance = determine_performance(sales_per_hour)
 
-        if performance == "Excellent":
-            count += 1
+        statistics[performance] += 1
 
-    return count
+    return statistics
+
+# Calculate statistics once
+statistics = calculate_performance_statistics(employees)
+
+# We already have the Excellent count here.
+excellent_count = statistics["Excellent"]
+
+print("Excellent employees:", excellent_count)
+
+
+
+# 15. Calculate Performance Distribution Report
+def print_performance_report(statistics):
+
+    print("========== PERFORMANCE DISTRIBUTION ==========")
+    print()
+
+    for performance, count in statistics.items():
+        print(performance, ":", count)
+
+
+statistics = calculate_performance_statistics(employees)
+
+print_performance_report(statistics) 
+
+# 16. Calculate Performance Percentage
+def calculate_performance_percentages(statistics, total_employees):
+
+    print("========== PERFORMANCE PERCENTAGE ==========")
+    print()
+
+    percentages={
+
+    }
+    for performance, count in statistics.items():
+
+        percentage = (count / total_employees)*100
+        percentages[performance] = percentage
+    return percentages
+
+statistics = calculate_performance_statistics(employees)
+
+total_employees = len(employees)
+
+percentages = calculate_performance_percentages(
+    statistics,
+    total_employees
+)
+
+print("========== PERFORMANCE PERCENTAGE ==========")
+print()
+
+for performance, percentage in percentages.items():
+    print(performance, ":", round(percentage, 2), "%")
+
+
+
+    
+
+
+
+
+    
 
 
 # ==============================
@@ -231,7 +301,7 @@ print("\n========== EMPLOYEE REPORT ==========\n")
 
 for name, data in employees.items():
 
-    total, rate = analyze_employee(name, data)
+    total, rate = analyze_employee(data)
 
     performance = determine_performance(rate)
 
@@ -255,8 +325,6 @@ company_sales, company_bonus = calculate_company_summary(employees)
 top_rate, top_employee = calculate_top_performer(employees)
 
 lowest_rate, lowest_employee = calculate_lowest_performer(employees)
-
-excellent_count = count_excellent_employees(employees)
 
 
 print("========== COMPANY SUMMARY ==========\n")
@@ -325,3 +393,8 @@ print(
 )
 
 print("Average sales:", "$", round(best_average, 2))
+
+
+
+
+
