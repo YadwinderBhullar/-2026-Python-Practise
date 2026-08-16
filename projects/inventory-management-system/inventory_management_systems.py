@@ -79,6 +79,23 @@ def calcualte_least_expensive_product(products):
             lowest_price = price
             lowest_product_name = product["name"]
     return lowest_product_name, lowest_price
+
+#6 Find low stock products
+def find_least_low_stock_product(products):
+  
+    low_stock_products = []
+
+    for product in products:
+         
+        if product["stock"] <=5:
+            low_stock_products.append(product)
+    return low_stock_products
+
+
+        
+            
+
+
     
 
 
@@ -91,15 +108,20 @@ def create_inventory_report(products):
     total_stock = calculate_total_stock(products)
     total_value = calculate_total_inventory_value(products)
     highest_price, most_expensive_product = calculate_most_expensive_products(products)
-    lowest_price, lowest_product_name = calcualte_least_expensive_product(products)
+    lowest_product_name, lowest_price = calcualte_least_expensive_product(products)
+    low_stock_product = find_least_low_stock_product(products)
+
     return {
+
         "total_products": total_products,
         "total_stock" : total_stock,
         "total_value": total_value,
         "highest_price": highest_price,
         "most_expensive_product": most_expensive_product,
+        "lowest_product_name": lowest_product_name,
         "lowest_price": lowest_price,
-        "lowest_product_name": lowest_product_name
+        "low_stock_products": low_stock_product
+        
 
     }
 # Print final inventory report
@@ -112,10 +134,24 @@ def print_inventory_report(report):
     print("Number of products:", report["total_products"])
     print("Total units in stock:", report["total_stock"])
     print("Total value of inventory :", report["total_value"])
+    print()
     print("Most Expensive Product :", report["most_expensive_product"])
     print("Price:", report["highest_price"])
+    print()
     print("Least Expensive Product:", report["lowest_product_name"])
     print("Price:", report["lowest_price"])
+    print()
+    print()
+    print("========== LOW STOCK PRODUCTS ==========")
+    print()
+    for product in report["low_stock_products"]:
+        print(
+            product["name"],
+            ":",
+            product["stock"],
+            "units"
+        )
+    print("")
 
 
 
