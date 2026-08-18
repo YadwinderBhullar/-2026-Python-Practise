@@ -1,0 +1,67 @@
+numbers = [12, 45, 7, 89, 23, 56, 20, 11]
+
+
+def find_largest(numbers):
+    largest= numbers[0]
+    for num in numbers:
+        if num > largest:
+            largest = num
+    return largest
+
+def find_smallest(numbers):
+    smallest=numbers[0]
+    for num in numbers:
+        if num < smallest:
+            smallest = num
+    return smallest
+
+
+
+def count_even_numbers(numbers):
+    count = 0 
+    for num in numbers:
+        if num % 2 == 0 :
+            count += 1
+    return count 
+
+def sum_of_even_number(numbers):
+    total= 0 
+    for num in numbers:
+        if num % 2 == 0: 
+            total +=num
+    return total
+
+
+def create_report(numbers):
+
+    count = count_even_numbers(numbers)
+    smallest = find_smallest(numbers)
+    largest = find_largest(numbers)
+    total = sum_of_even_number(numbers)
+
+    return  {
+            "count" : count,
+            "smallest":smallest,
+            "largest" : largest,
+            "total_even": total
+    }
+
+
+
+def print_report(report):
+
+    print()
+    print("========== INVENTORY REPORT ==========")
+    print()
+    print(("Total number of even numbers are: "), report["count"])
+    print()
+    print("Smallest number in the list is :", report["smallest"])
+    print()
+    print(("Largest number is :"), report["largest"])
+    print()
+    print()
+    print(("sum of all even numbers is :"), report["total_even"])
+    print()
+
+report = create_report(numbers)
+print_report(report)
