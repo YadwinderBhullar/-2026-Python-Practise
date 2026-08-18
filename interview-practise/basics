@@ -1,67 +1,129 @@
-numbers = [12, 45, 7, 89, 23, 56, 20, 11]
+# ============================================
+# PYTHON INTERVIEW PRACTICE
+# BASICS
+# ============================================
 
+
+numbers = [12, 45, 7, 89, 23, 56]
+
+
+# ============================================
+# Question 1 - Find Largest Number
+# ============================================
 
 def find_largest(numbers):
-    largest= numbers[0]
+
+    largest = numbers[0]
+
     for num in numbers:
+
         if num > largest:
             largest = num
+
     return largest
 
+
+# ============================================
+# Question 2 - Find Smallest Number
+# ============================================
+
 def find_smallest(numbers):
-    smallest=numbers[0]
+
+    smallest = numbers[0]
+
     for num in numbers:
+
         if num < smallest:
             smallest = num
+
     return smallest
 
 
+# ============================================
+# Question 3 - Count Even Numbers
+# ============================================
 
 def count_even_numbers(numbers):
+
+    count = 0
+
+    for num in numbers:
+
+        if num % 2 == 0:
+            count += 1
+
+    return count
+
+
+# ============================================
+# Question 4 - sum of even numbers
+# ============================================
+def sum_of_all_even_numbers(numbers):
+    sum = 0 
+    for num in numbers:
+        if num % 2 == 0:
+            sum += num
+    return sum 
+
+
+# ============================================
+# Question 5 - Count numbers greater than 50 
+# ============================================
+def count_greater_than_50(numbers):
     count = 0 
     for num in numbers:
-        if num % 2 == 0 :
-            count += 1
+        if num >50:
+            count +=1
     return count 
 
-def sum_of_even_number(numbers):
-    total= 0 
-    for num in numbers:
-        if num % 2 == 0: 
-            total +=num
-    return total
 
+
+
+# ============================================
+# Create Report
+# ============================================
 
 def create_report(numbers):
 
-    count = count_even_numbers(numbers)
-    smallest = find_smallest(numbers)
     largest = find_largest(numbers)
-    total = sum_of_even_number(numbers)
+    smallest = find_smallest(numbers)
+    even_count = count_even_numbers(numbers)
+    sum = sum_of_all_even_numbers(numbers)
+    total_number = count_greater_than_50(numbers)
 
-    return  {
-            "count" : count,
-            "smallest":smallest,
-            "largest" : largest,
-            "total_even": total
+    
+    return {
+        "largest": largest,
+        "smallest": smallest,
+        "even_count": even_count,
+        "summ_of_all _even_numbers": sum,
+        "number_greater_than_50": total_number
     }
 
 
+# ============================================
+# Print Report
+# ============================================
 
 def print_report(report):
 
     print()
-    print("========== INVENTORY REPORT ==========")
-    print()
-    print(("Total number of even numbers are: "), report["count"])
-    print()
-    print("Smallest number in the list is :", report["smallest"])
-    print()
-    print(("Largest number is :"), report["largest"])
-    print()
-    print()
-    print(("sum of all even numbers is :"), report["total_even"])
+    print("========== NUMBER REPORT ==========")
     print()
 
+    print("Largest number:", report["largest"])
+    print("Smallest number:", report["smallest"])
+    print("Number of even numbers:", report["even_count"])
+    print("Sum of all even numbers is : ", report["summ_of_all _even_numbers"])
+    print("Total numbers greater than 50 are : ", report["number_greater_than_50"])
+
+    print()
+
+
+# ============================================
+# Main Program
+# ============================================
+
 report = create_report(numbers)
+
 print_report(report)
