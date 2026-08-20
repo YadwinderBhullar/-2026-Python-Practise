@@ -155,15 +155,6 @@ sales_data = [
 # STAGE 1 - BASIC CALCULATIONS
 # ============================================
 
-# 1. Count number of sales records
-def count_sales_records(sales_data):
-
-    count = 0
-
-    for sale in sales_data:
-        count += 1
-
-    return count
 
 # 1. Count number of sales records
 def count_sales_records(sales_data):
@@ -176,7 +167,7 @@ def count_sales_records(sales_data):
     return count
 
 # 2. Calucalte total unit sold
-def calculate_total_unit_sold(sales_data):
+def calculate_total_units(sales_data):
     total_units = 0
     for sale in sales_data:
         total_units += sale["units"]
@@ -185,7 +176,7 @@ def calculate_total_unit_sold(sales_data):
 
 # 3. Calculate total sales reveneue
 
-def calculate_total_sales_revenue(sales_data):
+def calculate_total_sales(sales_data):
     total_sales = 0 
     for sale in sales_data:
         total_sale = sale["units"] * sale["unit_price"]
@@ -204,7 +195,7 @@ def average_sales_revenue(total_sales, sales_data):
 
 # 5 Find the highest sales revenue
 
-def calcualte_highest_sales(sales_data):
+def find_highest_sales(sales_data):
     highest_sale = 0
     for sale in sales_data:
         total_sale = sale["units"] * sale["unit_price"]
@@ -212,7 +203,61 @@ def calcualte_highest_sales(sales_data):
             highest_sale = total_sale
     return highest_sale
 
+# 6 Find lowest sales by revenue
 
+def find_lowest_sale(sales_data):
+    lowest_sale = 999
+    for sale in sales_data:
+        total_sale = sale["units"] * sale["unit_price"]
+        if total_sale <lowest_sale:
+            lowest_sale = total_sale
+    return lowest_sale
+# ============================================
+# Employee analaysis 
+# ============================================
+
+# 7 Calculate each employee sales
+def calculate_employee_sales(sales_data):
+    total_sales = {}
+
+    for sale in sales_data:
+        name = sale["employee"]
+        sale_amount = sale["units"] * sale["unit_price"]
+
+        if name not in total_sales:
+            total_sales[name] = sale_amount
+        else:
+            total_sales[name] += sale_amount
+
+    return total_sales
+
+
+
+#8 calculate how many units each employee sold
+def calculate_employee_units(sales_data):
+    total_units = {}
+    for sale in sales_data:
+        name = sale["employee"]
+        total_unit = sale["units"]
+        if name not in total_units:
+            total_units[name] = total_unit
+        else: 
+            total_units[name] += total_unit
+    return total_units
+# Calculate employee hours 
+
+def calculate_employee_hours(sales_data):
+    total_hours= {
+
+    }
+    for sale in sales_data:
+        name= sale["employee"]
+        hours=sale["hours"]
+        if name not in total_hours:
+            total_hours[name]= hours
+        else :
+            total_hours[name]+= hours
+    return total_hours
 
 
 
@@ -225,19 +270,28 @@ def calcualte_highest_sales(sales_data):
 def create_sales_report(sales_data):
 
     number_of_records = count_sales_records(sales_data)
-    total_unit_sold = calculate_total_unit_sold(sales_data)
-    total_sale = calculate_total_sales_revenue(sales_data)
+    total_unit_sold = calculate_total_units(sales_data)
+    total_sale = calculate_total_sales(sales_data)
     average = average_sales_revenue(total_sale, sales_data)
-    highest_sale = calcualte_highest_sales(sales_data)
+    highest_sale = find_highest_sales(sales_data)
+    lowest_sale = find_lowest_sale(sales_data)
 
+    employee_sales = calculate_employee_sales(sales_data)
+    employee_units = calculate_employee_units(sales_data)
+    employee_hours = calculate_employee_hours(sales_data)
 
     return {
         "number_of_records": number_of_records,
         "total_unit_solds": total_unit_sold,
         "total_sales": total_sale,
         "average_sale": average,
-        "highest_sale": highest_sale
+        "highest_sale": highest_sale,
+        "lowest_sale": lowest_sale,
+        "employee_sales": employee_sales,
+        "employee_units": employee_units,
+        "employee_hours": employee_hours
     }
+
 
 
 # ============================================
@@ -247,15 +301,44 @@ def create_sales_report(sales_data):
 def print_sales_report(report):
 
     print()
-    print("========== SALES PERFORMANCE REPORT ==========")
+    print("=" * 65)
+    print("                 SALES PERFORMANCE REPORT")
+    print("=" * 65)
+
     print()
+    print("COMPANY OVERVIEW")
+    print("-" * 65)
 
-    print("Number of sales records:", report["number_of_records"])
-    print("total unit sold", report["total_unit_solds"])
-    print("total sale of revenue is : ", report["total_sales"])
-    print("Average sale revenue: $", (round(report["average_sale"] ,2)))
-    print("Highest sale revenue: $", report["highest_sale"])
+    print(f"Number of sales records : {report['number_of_records']}")
+    print(f"Total units sold       : {report['total_unit_solds']}")
+    print(f"Total sales revenue    : ${report['total_sales']:,.2f}")
+    print(f"Average sale revenue   : ${report['average_sale']:,.2f}")
+    print(f"Highest sale revenue   : ${report['highest_sale']:,.2f}")
+    print(f"Lowest sale revenue    : ${report['lowest_sale']:,.2f}")
 
+    print("EMPLOYEE PERFORMANCE")
+    print("-" * 65)
+    print(f"{'Employee':<15}{'Units Sold':>12}{'Hours':>12}{'Total Sales':>20}")
+    print("-" * 65)
+
+    for employee in report["employee_sales"]:
+
+        sales = report["employee_sales"][employee]
+        units = report["employee_units"][employee]
+        hours = report["employee_hours"][employee]
+
+        sales_display = f"{sales:,.2f}$"
+
+        print(
+            f"{employee:<15}"
+            f"{units:>12}"
+            f"{hours:>12}"
+            f"{sales_display:>20}"
+)
+    print()
+    print("=" * 65)
+    print("                    END OF REPORT")
+    print("=" * 65)
 
 # ============================================
 # MAIN PROGRAM
