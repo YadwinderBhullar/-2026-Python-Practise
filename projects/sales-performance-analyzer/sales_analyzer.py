@@ -244,7 +244,8 @@ def calculate_employee_units(sales_data):
         else: 
             total_units[name] += total_unit
     return total_units
-# Calculate employee hours 
+
+#9 Calculate employee hours 
 
 def calculate_employee_hours(sales_data):
     total_hours= {
@@ -259,7 +260,50 @@ def calculate_employee_hours(sales_data):
             total_hours[name]+= hours
     return total_hours
 
+# 10. Calculate average sale for each employee
+def calculate_employee_average_sales(sales_data):
 
+    total_sales = {}
+    sale_count = {}
+
+    for sale in sales_data:
+
+        name = sale["employee"]
+        sale_amount = sale["units"] * sale["unit_price"]
+
+        if name not in total_sales:
+            total_sales[name] = sale_amount
+            sale_count[name] = 1
+        else:
+            total_sales[name] += sale_amount
+            sale_count[name] += 1
+
+    employee_average = {}
+
+    for name in total_sales:
+        employee_average[name] = total_sales[name] / sale_count[name]
+
+    return employee_average
+
+# 11 calculate sales per hour for employees
+def calculate_employee_sales_per_hours(sales_data):
+
+   
+    employee_hours = calculate_employee_hours(sales_data)
+    employee_sales = calculate_employee_sales(sales_data)
+
+    sales_per_hour = {
+
+    }
+    for employee in employee_sales:
+            sales = employee_hours[employee]
+            hours = employee_hours[employee]
+            sales_per_hour[employee]= sales/ hours
+    return sales_per_hour
+employee_sales_per_hour = calculate_employee_sales_per_hours(sales_data)
+
+print(employee_sales_per_hour)
+        
 
 
 
@@ -279,6 +323,7 @@ def create_sales_report(sales_data):
     employee_sales = calculate_employee_sales(sales_data)
     employee_units = calculate_employee_units(sales_data)
     employee_hours = calculate_employee_hours(sales_data)
+    employee_average = calculate_employee_average_sales(sales_data)
 
     return {
         "number_of_records": number_of_records,
@@ -289,7 +334,8 @@ def create_sales_report(sales_data):
         "lowest_sale": lowest_sale,
         "employee_sales": employee_sales,
         "employee_units": employee_units,
-        "employee_hours": employee_hours
+        "employee_hours": employee_hours,
+        "employee_average": employee_average
     }
 
 
@@ -323,18 +369,21 @@ def print_sales_report(report):
 
     for employee in report["employee_sales"]:
 
+        
+           
+
         sales = report["employee_sales"][employee]
         units = report["employee_units"][employee]
         hours = report["employee_hours"][employee]
-
-        sales_display = f"{sales:,.2f}$"
+        average = report["employee_average"][employee]
 
         print(
             f"{employee:<15}"
             f"{units:>12}"
             f"{hours:>12}"
-            f"{sales_display:>20}"
-)
+            f"${average:>14,.2f}"
+            f"${sales:>19,.2f}"
+    )
     print()
     print("=" * 65)
     print("                    END OF REPORT")
